@@ -79,7 +79,37 @@ function updateQty(id, qty) {
     //now update qty in mySQL...
     connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?",[qty, id], function(err, results) {
         console.log("Stock Remaining: " +qty);
+        
+        //allow users option to order again or exit
+        //added it here otherwise it would trigger out of turn
+        returnToMenu();
     })
-    //don't forget to END!
-    connection.end()
+    
+}
+
+function returnToMenu() {
+    inquirer
+    .prompt([
+        {
+            type: "list",
+            name: "confirm",
+            message: "\nWould you like to return to the main menu?",
+            choices: [
+                "Yes",
+                "No"
+            ]
+        }
+    ])
+    .then(function(res) {
+        //console.log(inquirerResponse)
+        var choice = res.confirm.toLowerCase();
+        console.log(choice);
+        if (choice === "yes") {
+            listAllProducts();
+        } else {
+            //otherwise end database connection and thus end the script
+            connection.end();
+        }
+        
+    });
 }
