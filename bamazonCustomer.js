@@ -1,6 +1,47 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
+//****** Inquirer ********
+function AskForOrder() {
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "Please enter the ID of the Product you would like to buy: ",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "Please enter the desired Quantity: ",
+            name: "qty"
+        }
+    ])
+    .then(function(inquirerResponse) {
+        //console.log(inquirerResponse)
+        var id = inquirerResponse.id;
+        var OrderQty = inquirerResponse.qty;
+
+        //Now query the database to see if their is enough in stock
+        connection.query("SELECT * FROM products WHERE item_id = ?", [id], function(err, res) {
+            var StockQty = res[0].stock_quantity;
+            //console.log(res);
+            //now evaulate to see if the order can be met with the current stock quantity...
+            if (StockQty >= OrderQty) {
+                console.log("\nORDER SUCCESS!");
+                //now update qty in mySQL and inform user of order total cost
+                var totalPrice = res[0].price * OrderQty;
+                var newQty = StockQty - OrderQty;
+                updateQty(id, newQty);
+                console.log("Total Price: $" +totalPrice);
+            } else {
+                console.log("ORDER DENIED, INSUFFICENT INVENTORY");
+            }
+            console.log(" Stock Qty: " +StockQty +" \n Order Qty: " + OrderQty +"\n");
+        })
+        
+    });
+}
+
 //****** mySQL ********
 var connection = mysql.createConnection({
     host: "localhost",
@@ -18,34 +59,27 @@ connection.connect(function(err) {
     console.log("      Now Viewing All Products \n-----------------------------------\n")
 
     listAllProducts();
+    //now prompt users to place an order once products are displayed    
 });
 
-
-//****** Inquirer ********
-// inquirer
-//     .prompt([
-//         {
-
-//         }
-//     ])
-
-//var productsArray = [];
 
 function listAllProducts() {
     connection.query("SELECT * FROM products ORDER BY department_name", function(err, results) {
         if(err) throw err;
 
         //now grab each record from mySQL
-        // console.log(results);
         for (var i=0; i< results.length; i++) {
             console.log("ID: " +results[i].item_id +" \n Product: " +results[i].product_name +" \n Department: " +results[i].department_name +" \n Price: " +results[i].price +" \n Qty: " +results[i].stock_quantity + " \n-----------------------------------\n");
         }
-        //productsArray(result);
-        //console.log(results);
-        //console.log(productsArray);
-        //don't forget to END!
-        connection.end()
+        AskForOrder();
     })
 }
 
-
+function updateQty(id, qty) {
+    //now update qty in mySQL...
+    connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?",[qty, id], function(err, results) {
+        console.log("Stock Remaining: " +qty);
+    })
+    //don't forget to END!
+    connection.end()
+}
