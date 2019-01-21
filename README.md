@@ -1,34 +1,54 @@
 # Bamazon
+## A Command-Line Online Store and Sales Database
 
-## Overview
+### Overview
+This project is designed to emulate an Amazon-like storefront using MySQL, node.js, and a handful of common npm node modules. The simple command-line app allows customers to easily browse all inventory items, place an order for an item, and if it's in stock with get a confirmation and calculated total cost. Plus, any successful order automatically update that product's inventory level in the MySQL database to prevent potential over selling to other users. Additionally, managers have a completly different list of commands that they can use to restock items in the database, add new products, or even run a report to find prodcuts with low stock quantities.
+- - -
+## Dependences
+As this project only uses a command-line interface and a locally deployed MySQL server, there is no "hosted version" of this app for easy live-demo. Therefore, if you would like to test or use this code on your own, you will first need the following dependencies:
 
-In this activity, you'll be creating an Amazon-like storefront with the MySQL skills you learned this unit. The app will take in orders from customers and deplete stock from the store's inventory. As a bonus task, you can program your app to track product sales across your store's departments and then provide a summary of the highest-grossing departments in the store.
+1. Step One: Install node.js
+  Required NPM Node Modules:
+   * [Node](https://www.npmjs.com/package/node) - for back-end command-line javascript interface.
 
-Make sure you save and require the MySQL and Inquirer npm packages in your homework files--your app will need them for data input and storage.
+   * [mysql](https://www.npmjs.com/package/mysql) - for the ability for node to directly recieve and send data to a MySQL database.
 
-## Submission Guide
+   * [require](https://www.npmjs.com/package/require) - used to allow command-line prompts and list menus for choice selection.
 
-Make sure you use the normal GitHub. Because this is a CLI App, there will be no need to deploy it to Heroku. This time, though, you need to include screenshots, a gif, and/or a video showing us that you got the app working with no bugs. You can include these screenshots or a link to a video in a `README.md` file.
+   Once node is installed on you computer and you have downloaded or forked a copy of these code files, you then need to use terminal to navigate to your project folder and type the command:
 
-* Include screenshots (or a video) of typical user flows through your application (for the customer and if relevant the manager/supervisor). This includes views of the prompts and the responses after their selection (for the different selection options).
+            npm install
+  
+   This will automatically install the required 'mysql', and 'require' modules respectively. For more details on installing node modules see: https://docs.npmjs.com/cli/install
 
-* Include any other screenshots you deem necessary to help someone who has never been introduced to your application understand the purpose and function of it. This is how you will communicate to potential employers/other developers in the future what you built and why, and to show how it works. 
+2. Step Two: Get MySql Tools (if you don't already have one)
+  
+    You may want to use something like MySQLWorkBench to create and locally deploy your own copy of the bamazon MySQL enviorment.
+    * [MySqlWorkBench](https://dev.mysql.com/downloads/workbench/) - a great fee tool for Windows, Mac, or Linux that allows you to create, edit, test, or locally host MySQL databases.
+    * [Documentaion](https://dev.mysql.com/doc/workbench/en/) - their documentation if you get stuck on how to setup or use MySqlWorkBench. In setting up you will be asked to create a root password REMEMBER THIS as you will need it in the javascript files to connect properly.
 
-* Because screenshots (and well-written READMEs) are extremely important in the context of GitHub, this will be part of the grading.
+3. Step Three: Set up MySQL
+    
+    Now that you have MySqlWorkBench (or an equivalent) installed you can now use the 'bamazon.sql' code to create the simple database, table and column names used in this project.
 
-If you haven't written a markdown file yet, [click here for a rundown](https://guides.github.com/features/mastering-markdown/), or just take a look at the raw file of these instructions.
+    The subsequent code from the 'products_seed.sql' file can then be used to quickly insert some 'dummy' data your new locally hosted database.
 
-### Submission on BCS
-
-* Please submit the link to the Github Repository!
-
+4. Step Four: Enjoy!
+  
+   Ok, maybe this isn't a dependency but it sure never hurts :)
+- - -
 ## Instructions
 
-### Challenge #1: Customer View (Minimum Requirement)
+There are two main javascript files that run this app: 'bamazonCustomer.js' for the customer experience and 'bamazonManager.js' for the manager view and commands.
 
-1. Create a MySQL Database called `bamazon`.
+### bamazonCustomer.js
+1. While navigated to the project folder within you terminal, simply enter the following command to start the customer file:
 
-2. Then create a Table inside of that database called `products`.
+            node bamazonCustomer.js
+
+This will show you a list of all the current products available from the bamazon database. Depending on the number of items available, you may need to scroll up to view them all.
+
+2. When you find a product that you would like to order simply enter the desired Product ID in the command-line prompt
 
 3. The products table should have each of the following columns:
 

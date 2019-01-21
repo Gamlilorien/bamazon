@@ -33,10 +33,13 @@ function AskForOrder() {
                 var newQty = StockQty - OrderQty;
                 updateQty(id, newQty);
                 console.log("Total Price: $" +totalPrice);
+                console.log(" Stock Qty: " +StockQty +" \n Order Qty: " + OrderQty +"\n");
             } else {
                 console.log("ORDER DENIED, INSUFFICENT INVENTORY");
+                console.log(" Stock Qty: " +StockQty +" \n Order Qty: " + OrderQty +"\n");
+                returnToMenu();
             }
-            console.log(" Stock Qty: " +StockQty +" \n Order Qty: " + OrderQty +"\n");
+
         })
         
     });
