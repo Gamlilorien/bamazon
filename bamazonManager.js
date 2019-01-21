@@ -41,8 +41,6 @@ function MenuChoices() {
         }
     });
 
-    //now re-start the inquirer to run again?
-    MenuChoices();
 }
 
 //****** mySQL ********
@@ -84,7 +82,7 @@ function restockReport() {
         if(err) throw err;
 
         console.log("\n-----------------------------------\n         RESTOCK REPORT \n-----------------------------------");
-        console.log("      Reorder the following items... \n-----------------------------------\n")
+        console.log("   Reorder the following items... \n-----------------------------------\n")
         //now grab each record from mySQL
         for (var i=0; i< results.length; i++) {
             console.log("ID: " +results[i].item_id +" \n Product: " +results[i].product_name +" \n Department: " +results[i].department_name +" \n Price: " +results[i].price +" \n Qty: " +results[i].stock_quantity + " \n-----------------------------------\n");
@@ -94,12 +92,7 @@ function restockReport() {
     MenuChoices();
 }
 
-function updateQty(id, qty) {
-    //now update qty in mySQL...
-    connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?",[qty, id], function(err, results) {
-        console.log("Stock Remaining: " +qty);
-    })
-}
+
 
 
 //don't forget to END!
