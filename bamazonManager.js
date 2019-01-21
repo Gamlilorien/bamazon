@@ -183,10 +183,24 @@ function AddNewProduct() {
         var qty = res.qty;
 
         //now we add new record to the mySQL database with user values
-        
+        createProduct(name, department, price, qty);
        
     })
 };
+
+function createProduct(name, department, price, qty) {
+    connection.query(
+      "INSERT INTO products SET ?",
+      {
+        product_name: name,
+        department_name: department,
+        price: price,
+        stock_quantity: qty
+      })
+      console.log("Product Added!")
+      //now return to menu?
+      returnToMenu();
+  };
 
 function updateQty(id, qty) {
     //now update qty in mySQL...
